@@ -82,8 +82,6 @@ export default function App() {
             </div>
           </div>
         </div>
-
-        <div className="sidebar-footer">Internship Project v1.0</div>
       </nav>
 
       <main className="content">
