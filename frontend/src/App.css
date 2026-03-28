@@ -19,11 +19,11 @@
   --yellow: #ffd600;
   --yellow-dim: rgba(255, 214, 0, 0.12);
   --green: #00e676;
-  --green-dim: rgba(0, 230, 118, 0.12);
+  --green-dim: rgba(42, 49, 45, 0.12);
 
   --text-primary: #e8eaf0;
-  --text-secondary: #8891a8;
-  --text-muted: #4a5068;
+  --text-secondary: #858da4;
+  --text-muted: #8b8f9e;
 
   --font-mono: 'JetBrains Mono', monospace;
   --font-display: 'Syne', sans-serif;

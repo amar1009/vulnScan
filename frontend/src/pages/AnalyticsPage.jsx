@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { listScans } from "../utils/api";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
-  PieChart, Pie, Legend,
   RadarChart, Radar, PolarGrid, PolarAngleAxis,
   LineChart, Line, CartesianGrid,
+  Legend,
 } from "recharts";
 
 const SEV_COLOR = {
@@ -21,7 +21,7 @@ const TOOLTIP_STYLE = {
   borderRadius: 6,
   padding: "8px 12px",
   fontSize: 11,
-  color: "var(--text-primary)",
+  color: "var(--primary-color)",
 };
 
 function ChartCard({ title, children, style = {} }) {
@@ -59,7 +59,19 @@ export default function AnalyticsPage() {
       </div>
     );
   }
-
+  const servicesData = Object.entries(
+  scans.reduce((acc, s) => {
+    (s.nmap_results?.ports ?? []).forEach((p) => {
+      if (p.state === "open" && p.service) {
+        acc[p.service] = (acc[p.service] || 0) + 1;
+      }
+    });
+    return acc;
+  }, {})
+)
+  .sort((a, b) => b[1] - a[1])   // highest count first
+  .slice(0, 8)                    // top 8 services
+  .map(([service, count]) => ({ service, count }));
   // ── 1. Risk score per host (bar) ──────────────────────────────────────────
   const riskPerHost = scans.map((s) => ({
     target: s.target,
@@ -178,17 +190,19 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Severity Distribution">
+        <ChartCard title="Top Services Detected">
           <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
-              <Pie data={sevPie} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={75}
-                label={({ name, value }) => `${name}: ${value}`}
-                labelLine={{ stroke: "#4a5068" }}
-                style={{ fontSize: 10, fontFamily: "JetBrains Mono", fill: "#8891a8" }}>
-                {sevPie.map((e, i) => <Cell key={i} fill={e.fill} />)}
-              </Pie>
+            <BarChart data={servicesData} margin={{ left: -20 }}>
+              <XAxis dataKey="service"
+                tick={{ fill: "#4a5068", fontSize: 9, fontFamily: "JetBrains Mono" }}
+                axisLine={false} tickLine={false} />
+              <YAxis
+                tick={{ fill: "#4a5068", fontSize: 9 }}
+                axisLine={false} tickLine={false} />
               <Tooltip contentStyle={TOOLTIP_STYLE} />
-            </PieChart>
+              <Bar dataKey="count" name="Hosts" fill="var(--accent)"
+                radius={[3, 3, 0, 0]} />
+            </BarChart>
           </ResponsiveContainer>
         </ChartCard>
       </div>
