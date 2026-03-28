@@ -61,7 +61,7 @@ cp .env.example .env
 pip install -r requirements.txt
 
 # Nmap SYN scans require root; basic -sV scans work without root
-uvicorn main:app --reload --port 8000
+python -m uvicorn main:app --reload
 ```
 
 ### Frontend
