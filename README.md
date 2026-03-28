@@ -620,7 +620,8 @@ The React app proxies all `/api/*` requests to `http://localhost:8000` via the `
 | `DB_PATH` | No | Path to SQLite file. Default: `vulnscan.db` in backend folder |
 
 ---
-
+Author
+Amarnath Vasanth
 ## Legal Notice
 
 Only scan systems you own or have explicit written authorization to test. Unauthorized port scanning may violate computer fraud and abuse laws in your jurisdiction. This tool is built for educational purposes as part of a virtual internship project.
